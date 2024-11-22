@@ -66,6 +66,8 @@ function Speed($user, $pasw)
     ]);
 
     $arreglo = ejecutarCurl('http://www.trackermasgps.com/api-v2/report/tracker/generate', $postData, $headers);
+    echo "-";
+    echo
     $reporte = $arreglo->id ?? null;
 
     if (!$reporte) {
