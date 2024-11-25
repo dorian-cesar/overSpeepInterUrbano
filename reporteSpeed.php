@@ -64,7 +64,7 @@ function Speed($user, $pasw)
         'time_filter' => json_encode(['from' => '00:00', 'to' => '23:59', 'weekdays' => [1, 2, 3, 4, 5, 6, 7]]),
         'plugin' => json_encode(['hide_empty_tabs' => true, 'plugin_id' => 27, 'show_seconds' => true, 'min_duration_minutes' => 1, 'max_speed' => 50, 'group_by_driver' => false, 'filter' => true])
     ]);
-
+    $k=1;
     $arreglo = ejecutarCurl('http://www.trackermasgps.com/api-v2/report/tracker/generate', $postData, $headers);
     echo "-";
     echo
@@ -121,6 +121,9 @@ function Speed($user, $pasw)
                 }
             }
             break;
+        }else{
+            echo " test # $k ";
+            $k=$k+1;
         }
     } while (!isset($datos->report->sheets));
 
