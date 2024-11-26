@@ -64,7 +64,7 @@ function Speed($user, $pasw)
         'time_filter' => json_encode(['from' => '00:00', 'to' => '23:59', 'weekdays' => [1, 2, 3, 4, 5, 6, 7]]),
         'plugin' => json_encode(['hide_empty_tabs' => true, 'plugin_id' => 27, 'show_seconds' => true, 'min_duration_minutes' => 1, 'max_speed' => 50, 'group_by_driver' => false, 'filter' => true])
     ]);
-    $k=1;
+    $k = 1;
     $arreglo = ejecutarCurl('http://www.trackermasgps.com/api-v2/report/tracker/generate', $postData, $headers);
     echo "-";
     echo
@@ -99,12 +99,16 @@ function Speed($user, $pasw)
 
                     // Condición A
                     if ($max_speed >= 50 && str_contains($direccion, 'Zona')) {
-                        $qry = "INSERT INTO `masgps`.`interUrbanoOverSpeed` 
+
+                        if (!str_contains($direccion, 'Ruta')) {
+
+                            $qry = "INSERT INTO `masgps`.`interUrbanoOverSpeed` 
                                 (`contrato`, `id_tracker`, `patente`, `fecha`, `start_time`, `duration`, `max_speed`, `lat`, `lng`, `direccion`) 
                                 VALUES ('Urbana', '$id_tracker', '$pat', '$ayer', '$start_time', '$duration', '$max_speed', '$lat', '$lng', '$direccion')";
 
-                        if (!mysqli_query($mysqli, $qry)) {
-                            echo "Error al insertar datos (Condición A): " . mysqli_error($mysqli);
+                            if (!mysqli_query($mysqli, $qry)) {
+                                echo "Error al insertar datos (Condición A): " . mysqli_error($mysqli);
+                            }
                         }
                     }
 
@@ -121,13 +125,11 @@ function Speed($user, $pasw)
                 }
             }
             break;
-        }else{
+        } else {
             echo " test # $k ";
-            $k=$k+1;
+            $k = $k + 1;
         }
     } while (!isset($datos->report->sheets));
 
     mysqli_close($mysqli); // Cerrar la conexión
 }
-
-?>
